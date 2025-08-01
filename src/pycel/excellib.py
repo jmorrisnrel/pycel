@@ -12,6 +12,8 @@ Python equivalents of various excel functions
 """
 import math
 import sys
+import operator
+import functools
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP, ROUND_UP
 
 import numpy as np
@@ -324,6 +326,13 @@ def sum_(*args):
     # if no non numeric cells, return zero (is what excel does)
     return sum(data)
 
+def product(*args):
+    data = _numerics(*args)
+    if isinstance(data, str):
+        return data
+
+    # if no non numeric cells, return zero (is what excel does)
+    return functools.reduce(operator.mul, data, 1)
 
 def sumif(rng, criteria, sum_range=None):
     # Excel reference: https://support.microsoft.com/en-us/office/
